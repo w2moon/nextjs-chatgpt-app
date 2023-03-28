@@ -12,7 +12,7 @@ import cweb from '@gswl/cweb';
 import { useEffect } from 'react';
 
 cweb.opt.needLogin = false;
-cweb.opt.baseURL = 'gswl.lovigame.com:8888/gsworks';
+cweb.opt.baseURL = 'https://gswl.lovigame.com:8877/gsworks';
 cweb.opt.base = 'jsonp';
 cweb.opt.notUseJData = true;
 
