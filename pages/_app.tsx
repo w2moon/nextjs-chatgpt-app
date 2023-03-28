@@ -7,6 +7,12 @@ import { CssBaseline, CssVarsProvider } from '@mui/joy';
 
 import { createEmotionCache, theme } from '@/lib/theme';
 
+import qs from 'query-string';
+import cweb from '@gswl/cweb';
+import { useEffect } from 'react';
+
+cweb.opt.baseURL = 'gswl.lovigame.com:8888/gsworks/';
+cweb.opt.base = 'axios';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -16,6 +22,37 @@ export interface MyAppProps extends AppProps {
 }
 
 export default function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {
+  useEffect(()=>{
+    (async ()=>{
+      try {
+        const item = localStorage.getItem("__GSDD");
+        if(item){
+          return;
+        }
+        const authCode = qs.parse(location.search).authCode || "";
+        if(qs.parse(location.search).authCode) {
+          localStorage.setItem("__GSDD",authCode as string)
+          location.href = location.origin + (location.pathname || "");
+          return;
+        }
+        const data = await cweb.request("getAllTags",{});
+      } catch (e: any) {
+        console.log("E",e)
+        // if (e.error === 'NEED_AUTH') {
+          const href = location.href;
+          const params = qs.parse(location.search);
+          delete params['authCode'];
+          delete params['code'];
+          let redirectUrl = qs.stringifyUrl({
+            url: location.origin + (location.pathname || ""),
+          });
+          location.href = e.authUrl + encodeURIComponent(redirectUrl);
+        // } else {
+        //   throw e;
+        // }
+      }
+    })();
+  },[])
   return (
     <CacheProvider value={emotionCache}>
       <Head>

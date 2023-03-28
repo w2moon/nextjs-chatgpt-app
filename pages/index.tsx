@@ -1,10 +1,12 @@
 import * as React from 'react';
 
+
 import { Container, useTheme } from '@mui/joy';
 
 import { ChatArea } from '@/components/ChatArea';
 import { isValidOpenAIApiKey, SettingsModal } from '@/components/SettingsModal';
 import { useSettingsStore } from '@/lib/store';
+
 
 
 export default function Home() {
@@ -18,6 +20,7 @@ export default function Home() {
     if (!!process.env.REQUIRE_USER_API_KEYS && !isValidOpenAIApiKey(apiKey))
       setSettingsShown(true);
   }, [apiKey]);
+
 
   return (
     <Container maxWidth='xl' disableGutters sx={{
