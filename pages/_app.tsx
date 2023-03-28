@@ -12,7 +12,7 @@ import cweb from '@gswl/cweb';
 import { useEffect } from 'react';
 
 cweb.opt.baseURL = 'gswl.lovigame.com:8888/gsworks/';
-cweb.opt.base = 'axios';
+cweb.opt.base = 'jsonp';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -25,19 +25,23 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
   useEffect(()=>{
     (async ()=>{
       try {
-        const item = localStorage.getItem("__GSDD");
-        if(item){
-          return;
-        }
-        const authCode = qs.parse(location.search).authCode || "";
-        if(qs.parse(location.search).authCode) {
-          localStorage.setItem("__GSDD",authCode as string)
-          location.href = location.origin + (location.pathname || "");
-          return;
-        }
-        const data = await cweb.request("getAllTags",{});
+        // const item = localStorage.getItem("__GSDD");
+        // if(item){
+        //   return;
+        // }
+        // const authCode = qs.parse(location.search).authCode || "";
+        // if(qs.parse(location.search).authCode) {
+        //   localStorage.setItem("__GSDD",authCode as string)
+        //   location.href = location.origin + (location.pathname || "");
+        //   return;
+        // }
+        const obj = qs.parse(location.search);
+        const data = await cweb.request("getAllTags",{...obj});
       } catch (e: any) {
         console.log("E",e)
+        if(!e.authUrl){
+          return;
+        }
         // if (e.error === 'NEED_AUTH') {
           const href = location.href;
           const params = qs.parse(location.search);
@@ -45,8 +49,10 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
           delete params['code'];
           let redirectUrl = qs.stringifyUrl({
             url: location.origin + (location.pathname || ""),
+            query:params,
           });
-          location.href = e.authUrl + encodeURIComponent(redirectUrl);
+        window.open(e.authUrl + encodeURIComponent(redirectUrl));
+          // location.href = e.authUrl + encodeURIComponent(redirectUrl);
         // } else {
         //   throw e;
         // }
