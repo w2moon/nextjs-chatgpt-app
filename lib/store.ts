@@ -24,7 +24,7 @@ export const useSettingsStore = create<SettingsState>()(
         if (typeof localStorage === 'undefined') return '';
         return localStorage.getItem('app-settings-openai-api-key') || '';
       })(),
-      chatModelId: 'gpt-4',
+      chatModelId: 'gpt-3.5-turbo',
       systemPurposeId: 'Developer',
 
       setApiKey: (apiKey: string) => set({ apiKey }),

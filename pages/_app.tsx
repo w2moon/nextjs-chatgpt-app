@@ -51,8 +51,8 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
             url: location.origin + (location.pathname || ""),
             query:params,
           });
-        window.open(e.authUrl + encodeURIComponent(redirectUrl));
-          // location.href = e.authUrl + encodeURIComponent(redirectUrl);
+        // window.open(e.authUrl + encodeURIComponent(redirectUrl));
+          location.href = e.authUrl + encodeURIComponent(redirectUrl);
         // } else {
         //   throw e;
         // }
