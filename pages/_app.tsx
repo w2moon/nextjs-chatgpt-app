@@ -11,12 +11,14 @@ import qs from 'query-string';
 import cweb from '@gswl/cweb';
 import { useEffect } from 'react';
 
-cweb.opt.baseURL = 'gswl.lovigame.com:8888/gsworks/';
+cweb.opt.needLogin = false;
+cweb.opt.baseURL = 'gswl.lovigame.com:8888/gsworks';
 cweb.opt.base = 'jsonp';
+cweb.opt.notUseJData = true;
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
-
+let tested = false;
 export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
@@ -24,18 +26,13 @@ export interface MyAppProps extends AppProps {
 export default function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {
   useEffect(()=>{
     (async ()=>{
+      if(tested){
+        return;
+      }
+      tested = true;
       try {
-        // const item = localStorage.getItem("__GSDD");
-        // if(item){
-        //   return;
-        // }
-        // const authCode = qs.parse(location.search).authCode || "";
-        // if(qs.parse(location.search).authCode) {
-        //   localStorage.setItem("__GSDD",authCode as string)
-        //   location.href = location.origin + (location.pathname || "");
-        //   return;
-        // }
         const obj = qs.parse(location.search);
+        console.log(cweb)
         const data = await cweb.request("getAllTags",{...obj});
       } catch (e: any) {
         console.log("E",e)

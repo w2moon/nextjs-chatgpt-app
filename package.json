@@ -13,7 +13,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.6",
-    "@gswl/cweb": "^1.0.79",
+    "@gswl/cweb": "^1.0.80",
     "@mui/icons-material": "^5.11.11",
     "@mui/joy": "^5.0.0-alpha.72",
     "@vercel/analytics": "^0.1.11",
